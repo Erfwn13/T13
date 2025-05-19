@@ -1,0 +1,134 @@
+# gui_t13.py
+
+import tkinter as tk
+import sys
+from t13_core import T13Engine
+
+# نمونه‌سازی هسته‌ی مرکزی
+ai = T13Engine(user_name="Erfan")
+options = ["ادامه پروژه", "استراحت", "تعویق"]
+
+# کلاس برای ریدایرکت خروجی print به Text ویجت
+class RedirectText:
+    def __init__(self, widget):
+        self.widget = widget
+
+    def write(self, string):
+        self.widget.insert(tk.END, string)
+        self.widget.see(tk.END)
+
+    def flush(self):
+        pass
+
+# تابع کمکی برای اجرای توابع با نمایش خروجی در GUI
+def run_with_output(fn):
+    output_text.delete(1.0, tk.END)
+    sys.stdout = RedirectText(output_text)
+    try:
+        fn()
+    except Exception as e:
+        print(f"⚠️ خطا: {e}")
+    finally:
+        sys.stdout = sys.__stdout__
+
+# خواندن مقادیر واردشده توسط کاربر
+def get_user_feelings():
+    return {
+        "joy": int(entry_joy.get() or 5),
+        "stress": int(entry_stress.get() or 5),
+        "hope": int(entry_hope.get() or 5),
+        "fear": int(entry_fear.get() or 5),
+        "energy": int(entry_energy.get() or 5)
+    }
+
+# اجرای هم‌زمان کل سیستم با احساسات کاربر
+def run_custom_all():
+    feelings = get_user_feelings()
+    run_with_output(lambda: ai.run_all(feelings, options))
+
+# ساختار اصلی رابط
+root = tk.Tk()
+root.title("رابط کاربری T13.3 – ساخته شده توسط عرفان")
+root.geometry("700x750")
+root.configure(bg="#1e1e1e")
+
+# تیتر
+title = tk.Label(
+    root,
+    text="🧠 سیستم هوش مصنوعی T13.3",
+    font=("Tahoma", 18, "bold"),
+    bg="#1e1e1e",
+    fg="#00cc99"
+)
+title.pack(pady=10)
+
+# فرم ورودی احساسات
+form_frame = tk.Frame(root, bg="#1e1e1e")
+form_frame.pack(pady=10)
+
+labels = ["شادی", "استرس", "امید", "ترس", "انرژی"]
+entries = []
+
+for i, text in enumerate(labels):
+    tk.Label(
+        form_frame,
+        text=text,
+        font=("Tahoma", 10),
+        fg="white",
+        bg="#1e1e1e"
+    ).grid(row=0, column=i, padx=5)
+    entry = tk.Entry(form_frame, width=5, font=("Tahoma", 10))
+    entry.grid(row=1, column=i, padx=5)
+    entries.append(entry)
+
+entry_joy, entry_stress, entry_hope, entry_fear, entry_energy = entries
+
+# دکمه اجرای کامل با مقادیر کاربر
+tk.Button(
+    root,
+    text="🚀 اجرای کامل با احساسات من",
+    command=run_custom_all,
+    bg="#006699",
+    fg="white",
+    font=("Tahoma", 12),
+    width=40
+).pack(pady=5)
+
+# مجموعه دکمه‌های دیگر
+btn_frame = tk.Frame(root, bg="#1e1e1e")
+btn_frame.pack(pady=5)
+
+buttons = [
+    ("🧠 حافظه", lambda: run_with_output(ai.run_memory)),
+    ("📊 تحلیل احساسات", lambda: run_with_output(lambda: ai.run_emotion(get_user_feelings()))),
+    ("🧭 تصمیم‌گیری", lambda: run_with_output(lambda: ai.run_decision(options))),
+    ("🎭 رفتار", lambda: run_with_output(ai.run_behavior)),
+    ("🧬 ارتقا", lambda: run_with_output(ai.run_upgrade)),
+    ("🩺 سلامت سیستم", lambda: run_with_output(ai.run_health)),
+    ("📈 تحلیل روند", lambda: run_with_output(ai.run_trend_analysis)),
+    ("🎇 دنیاسازی و ایده", lambda: run_with_output(ai.run_multiverse))
+]
+
+for text, cmd in buttons:
+    tk.Button(
+        btn_frame,
+        text=text,
+        command=cmd,
+        bg="#333333",
+        fg="white",
+        font=("Tahoma", 10),
+        width=30
+    ).pack(pady=3)
+
+# ویجت متنی برای نمایش خروجی‌ها
+output_text = tk.Text(
+    root,
+    height=25,
+    bg="#000000",
+    fg="#00ff00",
+    font=("Consolas", 10),
+    insertbackground="white"
+)
+output_text.pack(fill="both", expand=True, padx=10, pady=10)
+
+root.mainloop()
