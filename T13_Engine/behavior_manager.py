@@ -31,3 +31,4 @@ def generate_response(mode, message):
         return f"⚡ [جوش خلاقیت]: {message} — بیا یه چیز متفاوت امتحان کنیم!"
     else:
         return f"💬 [پیش‌فرض]: {message}"
+    

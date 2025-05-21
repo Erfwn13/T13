@@ -7,16 +7,19 @@ from decision_layered import layered_decision
 LOG_FILE = "data/strategic_log.json"
 
 def choose_best_path(feelings, goal="پیشرفت پروژه"):
-    # دریافت مسیرهای پیشنهادی از سیستم قبلی
-    options = layered_decision(feelings, goal)
-
+    # دریافت گزینه‌ها، شامل گزینه‌های ارتقایی اگر موجود باشند
+    options = layered_decision(feelings)
     if not options:
         return None
 
-    # انتخاب مسیر با کمترین ریسک و بهترین reward
-    ranked = sorted(options, key=lambda x: (x["risk"].count("خطر") + len(x["risk"]), -len(x["reward"])))
+    # آستانه‌های ساده برای انتخاب (مثال)
+    ranked = sorted(
+        options, 
+        key=lambda x: (x["risk"].count("خطر") + len(x["risk"]) if isinstance(x, dict) else 0, 
+                       -len(x["option"]) if isinstance(x, dict) else 0)
+    )
     best = ranked[0]
-
+    # ثبت در لاگ
     save_to_log(best, feelings)
     return best
 

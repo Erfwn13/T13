@@ -1,4 +1,5 @@
 import sqlite3
+import json
 
 DB_FILE = "data/t13_database.db"
 
@@ -17,6 +18,26 @@ def init_database():
     conn.commit()
     conn.close()
     print("✅ جدول حافظه ایجاد شد یا از قبل وجود داشت.")
+
+def initialize_database():
+    connection = sqlite3.connect("database.db")  # مسیر پایگاه داده خود را جایگزین کنید
+    cursor = connection.cursor()
+    
+    # ایجاد جدول memory در صورت عدم وجود
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS memory (
+            key TEXT PRIMARY KEY,
+            value TEXT
+        )
+    """)
+    
+    # افزودن داده پیش‌فرض (اختیاری)
+    cursor.execute("""
+        INSERT OR IGNORE INTO memory (key, value) VALUES (?, ?)
+    """, ("facts:creator", "Erfan"))
+    
+    connection.commit()
+    connection.close()
 
 # ذخیره یک مقدار در پایگاه داده
 def set_memory(key, value):
@@ -50,3 +71,14 @@ def get_all_memory():
     rows = cursor.fetchall()
     conn.close()
     return {key: value for key, value in rows}
+
+def save_conversation(conversation_history):
+    with open("conversation_history.json", "w", encoding="utf-8") as file:
+        json.dump(conversation_history, file, ensure_ascii=False, indent=4)
+
+def load_conversation():
+    try:
+        with open("conversation_history.json", "r", encoding="utf-8") as file:
+            return json.load(file)
+    except FileNotFoundError:
+        return []

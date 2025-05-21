@@ -1,5 +1,6 @@
 # digital_selfcare.py
 
+import gc
 import psutil
 import time
 from datetime import datetime
@@ -31,6 +32,10 @@ def get_system_health():
 
     status["alert"] = alert
     return status
+
+def optimize_performance():
+    gc.collect()
+    print("✅ بهینه‌سازی منابع سیستم انجام شد.")
 
 def print_health_report(status):
     print("\n🩺 وضعیت سلامت سیستم:")

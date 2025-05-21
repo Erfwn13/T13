@@ -43,3 +43,17 @@ def adaptive_reaction(score):
         return "🟡 سطح امید پایین گزارش شده. آیا کمکی از من برمیاد؟"
     else:
         return "⚪ وضعیت احساسی پایدار."
+
+class EmotionStack:
+    def __init__(self, max_size=200):
+        self.emotions = []
+        self.max_size = max_size
+
+    def add_emotion(self, emotion, intensity):
+        entry = {"emotion": emotion, "intensity": intensity, "timestamp": datetime.now()}
+        self.emotions.append(entry)
+        if len(self.emotions) > self.max_size:
+            self.emotions.pop(0)
+
+    def get_recent_emotions(self, count=5):
+        return self.emotions[-count:]

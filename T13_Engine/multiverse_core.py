@@ -45,3 +45,35 @@ def CreativityPulse(area="AI"):
     }
 
     return f"🎇 ایده خلاقانه ({area}):\n" + random.choice(ideas.get(area, ["در این حوزه فعلاً ایده‌ای ثبت نشده."]))
+
+class MultiverseCore:
+    def __init__(self):
+        self.scenarios = [
+            "ساخت یک پروژه خلاقانه جدید.",
+            "نوشتن یک داستان کوتاه علمی-تخیلی.",
+            "ایجاد یک برنامه برای مدیریت زمان.",
+            "طراحی یک سیستم هوش مصنوعی برای کمک به یادگیری."
+        ]
+
+    def generate_idea(self):
+        """
+        تولید یک ایده خلاقانه به صورت تصادفی
+        """
+        return random.choice(self.scenarios)
+    
+
+class WorldBuilder:
+    def __init__(self):
+        self.worlds = []
+
+    def create_world(self, theme, complexity=3):
+        world = {
+            "theme": theme,
+            "complexity": complexity,
+            "details": f"دنیایی با موضوع {theme} و پیچیدگی {complexity} ایجاد شد."
+        }
+        self.worlds.append(world)
+        return world
+
+    def list_worlds(self):
+        return self.worlds
