@@ -1,0 +1,4 @@
+2025-05-21 13:55:26,074 - INFO - Performance Metrics: {'Process Start': '2025-05-21 13:55:26'}
+2025-05-21 13:55:26,074 - INFO - Elapsed Time: 0.00 seconds
+2025-05-21 13:55:29,152 - INFO - Performance Metrics: {'avg_emotion': 5.6}
+2025-05-21 13:55:31,798 - INFO - Elapsed Time: 5.72 seconds

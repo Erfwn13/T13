@@ -1,6 +1,6 @@
 from database_utils import init_database, save_conversation, load_conversation
 from memory_core import set_fact, get_fact
-from t13_central import T13CentralCore
+from t13_central import T13CentralCoreV4
 from interaction_module import TextInteraction
 from self_upgrade_engine import upgrade_scheduler
 
@@ -22,7 +22,7 @@ def main():
     print("🔍 مقدار بازیابی‌شده:", get_fact("creator"), "\n")
 
     # اجرای کامل سیستم از طریق هسته مرکزی
-    central = T13CentralCore(profile_name="focus_mode")
+    central = T13CentralCoreV4(profile_name="focus_mode")
     central.run_all()
 
     upgrade_scheduler(interval_minutes=1) # برای تست، هر 6 ثانیه اجرا می‌شود؛ تغییر به مقدار مناسب در محیط عملیاتی

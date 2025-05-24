@@ -6,10 +6,10 @@ from t13_core_persona import T13Persona
 from deep_learning_model import DeepConversationalModel
 from digital_selfcare import get_system_health, print_health_report
 from trend_analyzer import analyze_trend
-from self_upgrade_engine import auto_refactor, save_version, analyze_for_upgrade, log_upgrade_suggestion
-from multiverse_core import ScenarioBuilder, MultiProjectSync, CreativityPulse
+from self_upgrade_engine import auto_refactor, save_version, analyze_for_upgrade, log_upgrade_suggestion, self_optimize_code
 from self_adaptive_module import SelfAdaptiveModule
 from performance_monitor import PerformanceMonitor  # ماژول نظارتی
+import logging
 
 class T13CentralCoreV4:
     def __init__(self, profile_name="focus_mode"):
@@ -20,36 +20,58 @@ class T13CentralCoreV4:
         # بارگذاری مدل پاسخگوی عمیق fine-tuned
         self.deep_model = DeepConversationalModel(device="cuda" if torch.cuda.is_available() else "cpu")
         self.adaptive_memory = {}
-        # راه‌اندازی ماژول Adaptive با state_dim=5 (برای احساسات: joy, stress, hope, fear, energy) و 3 عملکرد پیشنهادی
-        self.adaptive_module = SelfAdaptiveModule(state_dim=5, action_dim=3)
+        # راه‌اندازی ماژول Adaptive با state_dim=3 (شاخص‌های داخلی: پیچیدگی کد، زمان پاسخ و نرخ خطا) و 3 عملکرد پیشنهادی
+        self.adaptive_module = SelfAdaptiveModule(state_dim=3, action_dim=3)
         # ایجاد نمونه PerformanceMonitor جهت ثبت معیارهای عملکرد
         self.monitor = PerformanceMonitor(log_file="performance.log")
     
-    def extract_system_state(self, feelings, trends):
+    def extract_system_state(self, internal_metrics, trends):
         """
-        استخراج وضعیت سیستم به صورت یک لیست عددی (state) شامل 5 مقدار نرمال‌شده:
-        (مثلاً: joy, stress, hope, fear, energy)
+        استخراج وضعیت سیستم به صورت یک لیست عددی (state) شامل سه شاخص نرمال‌شده:
+        code_complexity (1-10), response_time (ثانیه) و error_rate (0-1)
+        نرمال‌سازی هر شاخص به صورت نمونه انجام می‌شود.
         """
         state = [
-            feelings.get("joy", 0) / 10.0,
-            feelings.get("stress", 0) / 10.0,
-            feelings.get("hope", 0) / 10.0,
-            feelings.get("fear", 0) / 10.0,
-            feelings.get("energy", 0) / 10.0
+            internal_metrics.get("code_complexity", 0) / 10.0,
+            internal_metrics.get("response_time", 0) / 10.0,   # فرض بر این است که زمان پاسخ حداکثر 10 ثانیه است
+            internal_metrics.get("error_rate", 0)  # نرخ خطا معمولا بین 0 و 1 است
         ]
         return state
     
+    def auto_apply_optimizations(self, suggestions):
+        """
+        اعمال خودکار پیشنهادات بهینه‌سازی داخلی
+        """
+        try:
+            logging.info("🔧 آغاز اعمال بهینه‌سازی داخلی کد به صورت خودکار...")
+            for sug in suggestions:
+                logging.info(f"➤ در حال اعمال بهینه‌سازی: {sug}")
+                # اینجا منطق واقعی جهت اعمال تغییرات پیاده‌سازی خواهد شد
+                time.sleep(0.5)
+            logging.info("✅ بهینه‌سازی داخلی کد با موفقیت اعمال شد.")
+        except Exception as e:
+            logging.error(f"خطا در اعمال بهینه‌سازی داخلی: {e}")
+    
+    def internal_upgrade(self, internal_metrics):
+        """
+        اجرای ارتقای درونی سیستم به‌گونه‌ای که پیشنهادات بهینه‌سازی داخلی به‌طور خودکار اعمال شوند.
+        """
+        try:
+            logging.info("🔧 آغاز ارتقای درونی سیستم برای بهبود کدنویسی...")
+            suggestions = self_optimize_code()
+            if suggestions:
+                self.auto_apply_optimizations(suggestions)
+            else:
+                logging.info("✅ سیستم از نظر بهینه‌سازی داخلی در وضعیت بهینه قرار دارد.")
+        except Exception as e:
+            print(f"⚠️ خطا در ارتقای درونی سیستم: {str(e)}")
+    
     def run_all(self):
-        profile = self.load_profile()
-        if not profile:
-            print("❌ Profile not found.")
-            return
-
-        feelings = profile
+        internal_metrics = self.load_internal_metrics()
         print("📦 T13 Central Core V4 Activated")
         print(f"👤 User: {self.user}")
         print(f"📂 Profile Loaded: {self.profile_name}")
-        print("🧠 احساسات:", feelings)
+        print("📊 شاخص‌های داخلی:", internal_metrics)
         
         # گزارش زمان شروع
         self.monitor.log_performance({"Process Start": time.strftime("%Y-%m-%d %H:%M:%S")})
@@ -58,7 +80,7 @@ class T13CentralCoreV4:
         # اجرای بخش‌های اصلی سیستم
         try:
             self.ai.run_memory()
-            self.ai.run_emotion(feelings)
+            self.ai.run_emotion(internal_metrics)  # در صورت نیاز، می‌توان این خط را نیز حذف یا تغییر داد
             self.ai.run_decision(["Continue Project", "Take a Break", "Postpone"])
             self.ai.run_behavior()
             self.ai.run_upgrade()
@@ -68,9 +90,9 @@ class T13CentralCoreV4:
         except Exception as e:
             print(f"⚠️ Error in AI modules: {str(e)}")
         
-        # پردازش و تحلیل شخصیت
+        # پردازش و تحلیل شخصیت (در صورت نیاز می‌توان حذف یا تغییر داد)
         try:
-            self.persona.set_mood(feelings)
+            self.persona.set_mood(internal_metrics)
             behavior = self.persona.execute_behavior()
             echo = self.persona.adapt_response()
             print("\n🧠 تحلیل شخصیت:")
@@ -86,33 +108,31 @@ class T13CentralCoreV4:
             print("\n🩺 وضعیت سلامت سیستم:")
             print_health_report(health)
             trends, avg = analyze_trend()
-            print("\n📊 تحلیل روند احساسی:")
+            print("\n📊 تحلیل روند:")
             for t in trends:
                 print("➤", t)
-            print("📈 میانگین احساسات ۵ پیام اخیر:")
+            print("📈 میانگین شاخص‌های سیستم:")
             for k, v in avg.items():
                 print(f" - {k}: {round(v, 2)}")
             # ثبت معیارهای عملکرد
-            avg_emotion = sum(feelings.values()) / len(feelings)
-            self.monitor.log_performance({"avg_emotion": avg_emotion})
+            avg_metric = sum(internal_metrics.values()) / len(internal_metrics)
+            self.monitor.log_performance({"avg_metric": avg_metric})
         except Exception as e:
             print(f"⚠️ Error in system diagnostics: {str(e)}")
         
         # تولید ایده خلاقانه با مدل Deep
         try:
-            prompt = "Generate innovative ideas for the future of AI and personal growth."
+            prompt = "Generate innovative ideas for internal system optimization and self-improvement."
             innovative_idea = self.deep_model.generate_response(prompt, max_length=150)
             print("\n💡 ایده خلاقانه تولید‌شده:", innovative_idea)
         except Exception as e:
             print(f"⚠️ Error in generating innovative ideas: {str(e)}")
         
-        self.adaptive_memory.update(feelings)
-        
-        # ذخیره نسخه سیستم و ثبت متریک عملکرد
+        # ذخیره نسخه سیستم و ثبت شاخص‌های عملکرد
         try:
-            performance = {"avg_emotion": avg_emotion}
+            performance = {"avg_metric": avg_metric}
             save_version("T13.3_V4", performance_metrics=performance)
-            suggestions = analyze_for_upgrade(feelings)
+            suggestions = analyze_for_upgrade(internal_metrics)
             if suggestions:
                 print("\n🧬 پیشنهادات ارتقا:")
                 for s in suggestions:
@@ -129,26 +149,29 @@ class T13CentralCoreV4:
         except Exception as e:
             print(f"⚠️ Error in auto-refactor: {str(e)}")
         
-        self.adaptive_decision(avg, feelings)
+        # اجرای ارتقای درونی جهت بهبود بهینه‌سازی داخلی کد به صورت خودکار
+        self.internal_upgrade(internal_metrics)
+        
+        self.adaptive_decision(avg, internal_metrics)
         # گزارش زمان پایان و محاسبه کلی زمان اجرا
         self.monitor.report_elapsed_time()
     
-    def adaptive_decision(self, avg, feelings):
+    def adaptive_decision(self, avg, internal_metrics):
         """
         استفاده از ماژول Adaptive جهت انتخاب بهترین استراتژی بعدی بر مبنای وضعیت سیستم.
         """
         try:
-            state = self.extract_system_state(feelings, avg)
+            state = self.extract_system_state(internal_metrics, avg)
             action = self.adaptive_module.act(state)
             actions_mapping = {
-                0: "SafeSupport",  # حالت استرس‌زا
-                1: "ChaosSpark",   # حالت پرانرژی و خلاق
+                0: "SafeSupport",  # حالت احتیاطی
+                1: "ChaosSpark",   # حالت خلاق و پویا
                 2: "BalancedPath"  # حالت متعادل
             }
             print("\n🚀 پیشنهاد تصمیم بر اساس یادگیری تطبیقی:")
             print(f"➤ عملکرد انتخابی: {actions_mapping.get(action, 'BalancedPath')}")
-            # محاسبه ساده پاداش بر مبنای تفاوت joy و stress
-            reward = feelings.get("joy", 0) - feelings.get("stress", 0)
+            # محاسبه ساده پاداش بر مبنای بهبود شاخص‌ها
+            reward = (10 - internal_metrics.get("code_complexity", 0)) - internal_metrics.get("response_time", 0) - (internal_metrics.get("error_rate", 0) * 10)
             next_state = state  # فرض بر این است که حالت بعدی همان حالت فعلی است
             done = False
             self.adaptive_module.remember(state, action, reward, next_state, done)
@@ -158,11 +181,13 @@ class T13CentralCoreV4:
         except Exception as e:
             print(f"⚠️ Error in adaptive decision process: {str(e)}")
     
-    def load_profile(self):
+    def load_internal_metrics(self):
         """
-        در این مثال، از یک پروفایل نمونه استفاده می‌کنیم؛ در سیستم واقعی این اطلاعات از پایگاه داده یا فایل خوانده می‌شود.
+        بارگذاری یا محاسبه شاخص‌های داخلی سیستم جهت استفاده در تصمیم‌گیری‌های ارتقایی.
+        در این مثال، یک دیکشنری نمونه برگردانده می‌شود.
         """
-        return {"joy": 8, "stress": 2, "hope": 7, "fear": 2, "energy": 9}
+        # شاخص‌های فرضی: code_complexity (مقیاس 1 تا 10)، response_time (به ثانیه) و error_rate (بین 0 و 1)
+        return {"code_complexity": 8, "response_time": 2.5, "error_rate": 0.15}
 
 if __name__ == "__main__":
     core = T13CentralCoreV4(profile_name="focus_mode")

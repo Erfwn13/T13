@@ -1174,5 +1174,53 @@
     "fear": 2,
     "energy": 9,
     "timestamp": "2025-05-19T03:53:52.145946"
+  },
+  {
+    "joy": 5,
+    "stress": 5,
+    "hope": 5,
+    "fear": 5,
+    "energy": 5,
+    "timestamp": "2025-05-21T13:50:56.690836"
+  },
+  {
+    "joy": 8,
+    "stress": 2,
+    "hope": 7,
+    "fear": 2,
+    "energy": 9,
+    "timestamp": "2025-05-21T13:55:26.086228"
+  },
+  {
+    "joy": 8,
+    "stress": 2,
+    "hope": 7,
+    "fear": 2,
+    "energy": 9,
+    "timestamp": "2025-05-21T14:24:45.678120"
+  },
+  {
+    "joy": 8,
+    "stress": 2,
+    "hope": 7,
+    "fear": 2,
+    "energy": 9,
+    "timestamp": "2025-05-21T14:32:02.913722"
+  },
+  {
+    "joy": 5,
+    "stress": 5,
+    "hope": 5,
+    "fear": 5,
+    "energy": 5,
+    "timestamp": "2025-05-21T14:48:42.384398"
+  },
+  {
+    "joy": 5,
+    "stress": 5,
+    "hope": 5,
+    "fear": 5,
+    "energy": 5,
+    "timestamp": "2025-05-21T14:49:48.909291"
   }
 ]
