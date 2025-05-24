@@ -2,16 +2,28 @@ from transformers import GPT2LMHeadModel, GPT2Tokenizer
 import torch
 
 class DeepConversationalModel:
-    def __init__(self, model_name="gpt2", device="cpu"):
+    def __init__(self, model_name="auto", device="cpu", lang="fa"):
         """
-        بارگذاری مدل fine-tuned GPT2 (یا مدل پایه) و توکنایزر از دایرکتوری مشخص‌شده.
+        اگر model_name='auto' باشد، مدل فارسی برای fa و مدل انگلیسی برای en بارگذاری می‌شود.
         """
-        self.tokenizer = GPT2Tokenizer.from_pretrained(model_name)
-        self.model = GPT2LMHeadModel.from_pretrained(model_name)
-        self.device = device
-        self.model.to(self.device)
-        
+        if model_name == "auto":
+            if lang == "fa":
+                model_name = "HooshvareLab/gpt2-fa"
+            else:
+                model_name = "gpt2"
+        try:
+            self.tokenizer = GPT2Tokenizer.from_pretrained(model_name)
+            self.model = GPT2LMHeadModel.from_pretrained(model_name)
+            self.device = device
+            self.model.to(self.device)
+        except Exception as e:
+            self.tokenizer = None
+            self.model = None
+            self.device = device
+            self.error = str(e)
     def generate_response(self, prompt, max_length=100, temperature=1.0, top_k=50, top_p=0.95):
+        if not self.model or not self.tokenizer:
+            return f"مدل عمیق بارگذاری نشد: {getattr(self, 'error', 'نامشخص')}"
         try:
             inputs = self.tokenizer.encode(prompt, return_tensors="pt").to(self.device)
             with torch.no_grad():

@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import time
 import random
+from digital_selfcare import get_system_health
 
 class PerformanceDashboard:
     def __init__(self, parent):
@@ -40,6 +41,22 @@ class PerformanceDashboard:
         self.ax.set_xlabel("Time (s)")
         self.ax.set_ylabel("Avg Emotion")
         self.canvas.draw()
+    
+    def update_health_status(self, health_status):
+        """
+        نمایش وضعیت سلامت سیستم (CPU، RAM، Latency، هشدارها) در داشبورد
+        """
+        if hasattr(self, 'health_label'):
+            self.health_label.destroy()
+        alerts = '\n'.join(health_status.get('alert', []))
+        text = (
+            f"🧠 CPU: {health_status['cpu']}%\n"
+            f"💾 RAM: {health_status['ram']}%\n"
+            f"⏱️ Latency: {health_status['latency']} ms\n"
+            f"{alerts if alerts else 'وضعیت بهینه'}"
+        )
+        self.health_label = tk.Label(self.frame, text=text, font=("Segoe UI", 10), fg="red" if alerts else "green", bg="black")
+        self.health_label.pack(side=tk.BOTTOM, fill=tk.X, pady=5)
 
 if __name__ == "__main__":
     # اجرای نمونه داشبورد عملکرد برای تست
@@ -51,6 +68,8 @@ if __name__ == "__main__":
         # تولید داده تصادفی میانگین احساس برای شبیه‌سازی عملکرد سیستم
         avg_emotion = random.uniform(0, 10)
         dashboard.update_chart(avg_emotion)
+        health = get_system_health()
+        dashboard.update_health_status(health)
         root.after(1000, simulate_data)
     
     simulate_data()

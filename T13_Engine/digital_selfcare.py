@@ -1,11 +1,17 @@
 # digital_selfcare.py
 
 import gc
+import logging
 import psutil
 import time
 from datetime import datetime
 
 def get_system_health():
+    """
+    دریافت وضعیت سلامت سیستم شامل CPU، RAM، Latency و هشدارها.
+    خروجی:
+        dict: وضعیت سلامت و هشدارهای احتمالی
+    """
     cpu = psutil.cpu_percent(interval=1)
     ram = psutil.virtual_memory().percent
 
@@ -31,13 +37,25 @@ def get_system_health():
         alert.append("⚠️ تاخیر بالا – ممکن است مشکلی در پردازش باشد")
 
     status["alert"] = alert
+    # ثبت لاگ سلامت سیستم
+    logging.basicConfig(filename="data/selfcare_health.log", level=logging.INFO, format="%(asctime)s %(message)s", encoding="utf-8")
+    log_msg = f"CPU: {cpu}%, RAM: {ram}%, Latency: {latency}ms, Alerts: {alert}"
+    logging.info(log_msg)
     return status
 
 def optimize_performance():
+    """
+    بهینه‌سازی منابع سیستم با جمع‌آوری garbage و آزادسازی حافظه.
+    """
     gc.collect()
     print("✅ بهینه‌سازی منابع سیستم انجام شد.")
 
 def print_health_report(status):
+    """
+    چاپ گزارش سلامت سیستم به صورت متنی.
+    ورودی:
+        status (dict): وضعیت سلامت سیستم
+    """
     print("\n🩺 وضعیت سلامت سیستم:")
     print(f"🧠 CPU: {status['cpu']}%")
     print(f"💾 RAM: {status['ram']}%")
