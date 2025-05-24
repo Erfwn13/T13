@@ -262,6 +262,7 @@ class T13GUI:
         self.window.after(60000, self.optimize_and_sync)
 
     def optimize_and_sync(self):
+        """Perform optimization and sync periodically"""
         try:
             if not self.window.winfo_exists():
                 return  # اگر پنجره بسته شده، ادامه نده
