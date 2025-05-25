@@ -1,5 +1,5 @@
 import unittest
-from T13_Engine.behavior_manager import get_behavior_mode, generate_response
+from behavior_manager import get_behavior_mode, generate_response
 
 class TestBehaviorManager(unittest.TestCase):
     def test_get_behavior_mode(self):

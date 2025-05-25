@@ -1,6 +1,6 @@
 import unittest
 from datetime import datetime
-from T13_Engine.emotion_stack import EmotionStack, analyze_emotion, adaptive_reaction
+from emotion_stack import EmotionStack, analyze_emotion, adaptive_reaction
 
 class TestEmotionStack(unittest.TestCase):
     def test_add_and_get_recent_emotions(self):

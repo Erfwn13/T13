@@ -1,5 +1,5 @@
 import unittest
-from T13_Engine.multiverse_core import ScenarioBuilder, MultiProjectSync, CreativityPulse, MultiverseCore, WorldBuilder
+from multiverse_core import ScenarioBuilder, MultiProjectSync, CreativityPulse, MultiverseCore, WorldBuilder
 
 class TestMultiverseCore(unittest.TestCase):
     def test_scenario_builder(self):

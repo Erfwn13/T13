@@ -1,5 +1,5 @@
 import unittest
-from .interaction_module import TextInteraction
+from interaction_module import TextInteraction
 
 class TestTextInteraction(unittest.TestCase):
     def setUp(self):

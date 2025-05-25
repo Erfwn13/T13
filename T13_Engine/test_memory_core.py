@@ -1,5 +1,5 @@
 import unittest
-from .memory_core import MemoryManager
+from memory_core import MemoryManager
 
 class TestMemoryManager(unittest.TestCase):
     def setUp(self):
