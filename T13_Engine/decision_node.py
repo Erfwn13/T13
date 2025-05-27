@@ -1,5 +1,6 @@
 # decision_node.py
 
+
 def rank_options(options, emo_score, goal="پیشرفت"):
     """
     بررسی و رتبه‌بندی گزینه‌ها بر اساس احساسات فعلی و هدف.
@@ -42,14 +43,14 @@ def rank_options(options, emo_score, goal="پیشرفت"):
             score += 20
             explanation.append("سازگار با هدف پیشرفت")
 
-        results.append({
-            "option": option,
-            "score": score,
-            "why": explanation
-        })
+        results.append({"option": option, "score": score, "why": explanation})
 
     # مرتب‌سازی براساس امتیاز
     ranked = sorted(results, key=lambda x: x["score"], reverse=True)
-    best = ranked[0] if ranked else {"option": None, "score": 0, "why": ["هیچ گزینه‌ای یافت نشد"]}
+    best = (
+        ranked[0]
+        if ranked
+        else {"option": None, "score": 0, "why": ["هیچ گزینه‌ای یافت نشد"]}
+    )
 
     return best, ranked

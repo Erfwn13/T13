@@ -14,6 +14,7 @@ if not os.path.exists(EMO_LOG_FILE):
     with open(EMO_LOG_FILE, "w", encoding="utf-8") as f:
         json.dump([], f, indent=2, ensure_ascii=False)
 
+
 def analyze_emotion(input_data):
     """
     تحلیل احساسات ورودی و ثبت آن در لاگ.
@@ -29,11 +30,12 @@ def analyze_emotion(input_data):
         "hope": input_data.get("hope", 5),
         "fear": input_data.get("fear", 5),
         "energy": input_data.get("energy", 5),
-        "timestamp": datetime.now().isoformat()
+        "timestamp": datetime.now().isoformat(),
     }
 
     save_to_log(emo_score)
     return emo_score
+
 
 def save_to_log(score):
     """
@@ -47,6 +49,7 @@ def save_to_log(score):
         data.append(score)
         f.seek(0)
         json.dump(data, f, indent=2, ensure_ascii=False)
+
 
 def adaptive_reaction(score):
     """
@@ -66,6 +69,7 @@ def adaptive_reaction(score):
     else:
         return "⚪ وضعیت احساسی پایدار."
 
+
 class EmotionStack:
     """
     کلاس مدیریت پشته احساسات با قابلیت افزودن و بازیابی احساسات اخیر.
@@ -83,7 +87,11 @@ class EmotionStack:
             intensity (int): شدت احساس
         """
 
-        entry = {"emotion": emotion, "intensity": intensity, "timestamp": datetime.now()}
+        entry = {
+            "emotion": emotion,
+            "intensity": intensity,
+            "timestamp": datetime.now(),
+        }
         self.emotions.append(entry)
         if len(self.emotions) > self.max_size:
             self.emotions.pop(0)

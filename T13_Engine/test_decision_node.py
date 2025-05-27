@@ -1,5 +1,7 @@
 import unittest
+
 from decision_node import rank_options
+
 
 class TestDecisionNode(unittest.TestCase):
     def test_rank_options_energy_continue(self):
@@ -25,9 +27,12 @@ class TestDecisionNode(unittest.TestCase):
         self.assertIn("امید کم", " ".join(best["why"]))
 
     def test_no_options(self):
-        best, ranked = rank_options([], {"stress": 5, "energy": 5, "hope": 5}, goal="پیشرفت")
+        best, ranked = rank_options(
+            [], {"stress": 5, "energy": 5, "hope": 5}, goal="پیشرفت"
+        )
         self.assertIsNone(best["option"])
         self.assertIn("هیچ گزینه‌ای یافت نشد", " ".join(best["why"]))
+
 
 if __name__ == "__main__":
     unittest.main()

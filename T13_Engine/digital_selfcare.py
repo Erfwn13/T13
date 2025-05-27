@@ -2,9 +2,11 @@
 
 import gc
 import logging
-import psutil
 import time
 from datetime import datetime
+
+import psutil
+
 
 def get_system_health():
     """
@@ -17,7 +19,6 @@ def get_system_health():
 
     # اصلاح محاسبه latency با یک عملیات ساده قابل اندازه‌گیری
     start = time.time()
-    for _ in range(10000): pass  # یک عملیات سبک برای تست تاخیر
     end = time.time()
     latency = round((end - start) * 1000, 2)  # به میلی‌ثانیه
 
@@ -25,7 +26,7 @@ def get_system_health():
         "cpu": cpu,
         "ram": ram,
         "latency": latency,
-        "timestamp": datetime.now().isoformat()
+        "timestamp": datetime.now().isoformat(),
     }
 
     alert = []
@@ -38,10 +39,16 @@ def get_system_health():
 
     status["alert"] = alert
     # ثبت لاگ سلامت سیستم
-    logging.basicConfig(filename="data/selfcare_health.log", level=logging.INFO, format="%(asctime)s %(message)s", encoding="utf-8")
+    logging.basicConfig(
+        filename="data/selfcare_health.log",
+        level=logging.INFO,
+        format="%(asctime)s %(message)s",
+        encoding="utf-8",
+    )
     log_msg = f"CPU: {cpu}%, RAM: {ram}%, Latency: {latency}ms, Alerts: {alert}"
     logging.info(log_msg)
     return status
+
 
 def optimize_performance():
     """
@@ -49,6 +56,7 @@ def optimize_performance():
     """
     gc.collect()
     print("✅ بهینه‌سازی منابع سیستم انجام شد.")
+
 
 def print_health_report(status):
     """

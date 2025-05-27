@@ -2,9 +2,11 @@
 
 import json
 import os
+
 from decision_layered import layered_decision
 
 LOG_FILE = "data/strategic_log.json"
+
 
 def choose_best_path(feelings, goal="پیشرفت پروژه"):
     # دریافت گزینه‌ها، شامل گزینه‌های ارتقایی اگر موجود باشند
@@ -14,21 +16,24 @@ def choose_best_path(feelings, goal="پیشرفت پروژه"):
 
     # آستانه‌های ساده برای انتخاب (مثال)
     ranked = sorted(
-        options, 
-        key=lambda x: (x["risk"].count("خطر") + len(x["risk"]) if isinstance(x, dict) else 0, 
-                       -len(x["option"]) if isinstance(x, dict) else 0)
+        options,
+        key=lambda x: (
+            x["risk"].count("خطر") + len(x["risk"]) if isinstance(x, dict) else 0,
+            -len(x["option"]) if isinstance(x, dict) else 0,
+        ),
     )
     best = ranked[0]
     # ثبت در لاگ
     save_to_log(best, feelings)
     return best
 
+
 def save_to_log(option, feelings):
     os.makedirs("data", exist_ok=True)
     entry = {
         "decision": option,
         "feelings": feelings,
-        "timestamp": feelings.get("timestamp")
+        "timestamp": feelings.get("timestamp"),
     }
 
     # اگر فایل لاگ وجود داشت، بخون

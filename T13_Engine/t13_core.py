@@ -1,14 +1,15 @@
 # t13_core.py
 import os
-from memory_core import set_fact, get_fact
-from emotion_stack import analyze_emotion, adaptive_reaction
+
+from behavior_manager import generate_response, get_behavior_mode
 from decision_node import rank_options
-from behavior_manager import get_behavior_mode, generate_response
-from self_upgrade_engine import save_version, analyze_for_upgrade, log_upgrade_suggestion
 from digital_selfcare import get_system_health, print_health_report
+from emotion_stack import adaptive_reaction, analyze_emotion
+from memory_core import get_fact, set_fact
+from multiverse_core import CreativityPulse, MultiProjectSync, ScenarioBuilder
+from self_upgrade_engine import (analyze_for_upgrade, auto_refactor,
+                                 log_upgrade_suggestion, save_version)
 from trend_analyzer import analyze_trend
-from multiverse_core import ScenarioBuilder, MultiProjectSync, CreativityPulse
-from self_upgrade_engine import save_version, analyze_for_upgrade, log_upgrade_suggestion, auto_refactor
 
 
 class T13Engine:
@@ -20,10 +21,11 @@ class T13Engine:
         self.projects = [
             {"title": "T13.3 Core AI", "status": "در حال توسعه"},
             {"title": "Shadow Channel Launch", "status": "برنامه‌ریزی"},
-            {"title": "AI Story World", "status": "در حال تست"}
+            {"title": "AI Story World", "status": "در حال تست"},
         ]
         # اضافه کردن ویژگی interaction به عنوان نمونه کلاس TextInteraction
         from interaction_module import TextInteraction
+
         self.interaction = TextInteraction()
 
     def run_memory(self):
@@ -45,23 +47,24 @@ class T13Engine:
 
     def run_behavior(self):
         self.behavior_mode = get_behavior_mode(self.emotion_score)
-        response = generate_response(self.behavior_mode, "الان باید تصمیم بگیری، چه راهی رو انتخاب می‌کنی؟")
+        response = generate_response(
+            self.behavior_mode, "الان باید تصمیم بگیری، چه راهی رو انتخاب می‌کنی؟"
+        )
         print("🎭 سبک رفتاری انتخاب‌شده:", self.behavior_mode, "\n")
         print(response, "\n")
 
     def run_upgrade(self):
         performance = {"avg_emotion": self.emotion_score}
         save_version("T13.3+", performance_metrics=performance)
-        
-        suggestions = analyze_for_upgrade(self.emotion_score)
-        if suggestions:
+
+        if suggestions := analyze_for_upgrade(self.emotion_score):
             print("🧬 پیشنهادات ارتقا:")
             for s in suggestions:
                 print("➤", s)
             log_upgrade_suggestion(suggestions)
         else:
             print("✅ وضعیت پایدار: ارتقا نیاز نیست.\n")
-        
+
         auto_refactor()  # اجرای بازنویسی خودکار سیستم
 
     def run_health(self):

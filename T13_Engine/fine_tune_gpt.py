@@ -1,4 +1,7 @@
-from transformers import GPT2LMHeadModel, GPT2Tokenizer, Trainer, TrainingArguments, TextDataset, DataCollatorForLanguageModeling
+from transformers import (DataCollatorForLanguageModeling, GPT2LMHeadModel,
+                          GPT2Tokenizer, TextDataset, Trainer,
+                          TrainingArguments)
+
 
 def fine_tune_model(train_file, model_name="gpt2", output_dir="fine_tuned_model"):
     # بارگذاری توکنایزر و مدل اولیه
@@ -6,14 +9,8 @@ def fine_tune_model(train_file, model_name="gpt2", output_dir="fine_tuned_model"
     model = GPT2LMHeadModel.from_pretrained(model_name)
 
     # ایجاد دیتاست از فایل متنی داده‌های مکالمه
-    dataset = TextDataset(
-        tokenizer=tokenizer,
-        file_path=train_file,
-        block_size=128
-    )
-    data_collator = DataCollatorForLanguageModeling(
-        tokenizer=tokenizer, mlm=False
-    )
+    dataset = TextDataset(tokenizer=tokenizer, file_path=train_file, block_size=128)
+    data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
     training_args = TrainingArguments(
         output_dir=output_dir,
@@ -36,6 +33,7 @@ def fine_tune_model(train_file, model_name="gpt2", output_dir="fine_tuned_model"
     model.save_pretrained(output_dir)
     tokenizer.save_pretrained(output_dir)
     print("Fine-tuning completed. Model saved to:", output_dir)
+
 
 if __name__ == "__main__":
     # مسیر فایل داده‌های مکالمه را به روز کنید

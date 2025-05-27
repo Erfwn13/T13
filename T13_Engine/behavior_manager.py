@@ -1,5 +1,6 @@
 # behavior_manager.py
 
+
 def get_behavior_mode(emo_score):
     """
     تعیین حالت رفتاری به‌صورت خودکار بر اساس احساسات فعلی کاربر.
@@ -20,6 +21,7 @@ def get_behavior_mode(emo_score):
         return "ChillCompanion"
     else:
         return "ChaosSpark"
+
 
 def generate_response(mode, message):
     """

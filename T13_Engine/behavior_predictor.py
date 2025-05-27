@@ -29,6 +29,7 @@ class BehaviorPredictor:
             # حالت پیش‌فرض برای تعامل عمومی
             return "کاربر احتمالاً به دنبال تعامل عمومی است."
 
+
 # Example usage (برای تست در صورت نیاز):
 if __name__ == "__main__":
     conversation_history = [

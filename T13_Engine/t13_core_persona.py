@@ -2,7 +2,9 @@
 
 import random
 import time
+
 from echo_engine import echo_response
+
 
 class T13Persona:
     def __init__(self, core_ai):
@@ -32,10 +34,9 @@ class T13Persona:
             "happy": "ChillCompanion",
             "energized": "ShadowBoost",
             "stressed": "SafeSupport",
-            "neutral": "SafeSupport"
+            "neutral": "SafeSupport",
         }
         return mapping.get(self.mood, "SafeSupport")
-
 
     def determine_auto_action(self, emotion_score):
         """Decide on the best course of action based on the emotional state."""
@@ -61,8 +62,8 @@ class T13Persona:
 
     def execute_behavior(self):
         """Execute the behavior mode based on energy and mood."""
-        behavior_mode = self.update_energy(self.core_ai.emotion_score["energy"])
-        return behavior_mode
+        return self.update_energy(self.core_ai.emotion_score["energy"])
+
 
 # Example of how it works:
 # ai_persona = T13Persona(ai)

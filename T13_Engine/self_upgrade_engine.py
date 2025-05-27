@@ -1,24 +1,27 @@
 import json
 import logging
-from datetime import datetime, timedelta
-import time
-import threading
 import os
 import shutil
+import threading
+import time
+from datetime import datetime, timedelta
 
 # راه‌اندازی logging جهت ثبت رویدادها
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
     handlers=[
-        logging.FileHandler("c:\\Developer\\T13_Project\\T13\\data\\self_upgrade.log", encoding="utf-8"),
-        logging.StreamHandler()
-    ]
+        logging.FileHandler(
+            "c:\\Developer\\T13_Project\\T13\\data\\self_upgrade.log", encoding="utf-8"
+        ),
+        logging.StreamHandler(),
+    ],
 )
 
 VERSION_FILE = "c:\\Developer\\T13_Project\\T13\\data\\version.json"
 UPGRADE_LOG_FILE = "c:\\Developer\\T13_Project\\T13\\data\\upgrade_log.json"
 BACKUP_DIR = "c:\\Developer\\T13_Project\\T13\\backup\\"
+
 
 def backup_file(filepath):
     """یک نسخه پشتیبان از فایل مشخص شده ایجاد می‌کند"""
@@ -26,17 +29,20 @@ def backup_file(filepath):
         if not os.path.exists(BACKUP_DIR):
             os.makedirs(BACKUP_DIR)
         base = os.path.basename(filepath)
-        backup_path = os.path.join(BACKUP_DIR, f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{base}")
+        backup_path = os.path.join(
+            BACKUP_DIR, f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{base}"
+        )
         shutil.copy(filepath, backup_path)
         logging.info(f"💾 نسخه پشتیبان {backup_path} ایجاد شد.")
     except Exception as e:
         logging.error(f"خطا در ایجاد نسخه پشتیبان: {e}")
 
+
 def save_version(version, performance_metrics=None):
     record = {
         "version": version,
         "timestamp": datetime.now().isoformat(),
-        "performance": performance_metrics or {}
+        "performance": performance_metrics or {},
     }
     try:
         backup_file(VERSION_FILE)
@@ -45,6 +51,7 @@ def save_version(version, performance_metrics=None):
         logging.info("نسخه جدید سیستم با معیارهای عملکردی ثبت شد.")
     except Exception as e:
         logging.error(f"خطا در ثبت نسخه: {e}")
+
 
 def analyze_for_upgrade(internal_metrics):
     """
@@ -65,6 +72,7 @@ def analyze_for_upgrade(internal_metrics):
     except Exception as e:
         logging.error(f"خطا در تحلیل وضعیت ارتقا: {e}")
     return upgrades
+
 
 def log_upgrade_suggestion(suggestions):
     record = {"timestamp": datetime.now().isoformat(), "suggestions": suggestions}
@@ -87,6 +95,7 @@ def log_upgrade_suggestion(suggestions):
     except Exception as e:
         logging.error(f"خطا در ثبت پیشنهادات ارتقا: {e}")
 
+
 def auto_refactor():
     try:
         logging.info("🔄 آغاز بازنویسی خودکار سیستم (Refactor)...")
@@ -95,6 +104,7 @@ def auto_refactor():
         logging.info("✅ بازنویسی خودکار سیستم به پایان رسید.")
     except Exception as e:
         logging.error(f"خطا در بازنویسی خودکار سیستم: {e}")
+
 
 def self_optimize_code():
     """
@@ -115,6 +125,7 @@ def self_optimize_code():
         logging.error(f"خطا در بهینه‌سازی کد: {e}")
         return []
 
+
 def apply_upgrade(suggestions, current_emotion):
     """
     اعمال ارتقاهای پیشنهادی به‌طور خودکار، شامل بهبودهای سیستم و کدنویسی
@@ -132,6 +143,7 @@ def apply_upgrade(suggestions, current_emotion):
     except Exception as e:
         logging.error(f"خطا در اعمال ارتقاها: {e}")
 
+
 def read_system_emotion_score():
     """
     تابع نمونه برای خواندن وضعیت احساسات سیستم.
@@ -140,14 +152,17 @@ def read_system_emotion_score():
     # مقادیر نمونه جهت شبیه‌سازی
     return {"stress": 8, "hope": 3, "energy": 2}
 
+
 def upgrade_scheduler(interval_minutes=10):
     def scheduled_task():
         while True:
             try:
                 next_run = datetime.now() + timedelta(minutes=interval_minutes)
-                logging.info(f"⏳ اجرای بعدی بررسی در ساعت {next_run.strftime('%H:%M:%S')}")
+                logging.info(
+                    f"⏳ اجرای بعدی بررسی در ساعت {next_run.strftime('%H:%M:%S')}"
+                )
                 time.sleep(interval_minutes * 60)
-                
+
                 logging.info("🚀 آغاز بررسی دوره‌ای ارتقا...")
                 # خواندن وضعیت لحظه‌ای سیستم
                 current_emotion = read_system_emotion_score()
@@ -157,7 +172,7 @@ def upgrade_scheduler(interval_minutes=10):
                     log_upgrade_suggestion(suggestions)
                 else:
                     logging.info("✅ سیستم پایدار است؛ ارتقا نیاز نیست.")
-                
+
                 # اجرای عملیات خودکار اصلاح کد
                 auto_refactor()
                 # اعمال ارتقاهای پیشنهادی
@@ -166,14 +181,16 @@ def upgrade_scheduler(interval_minutes=10):
                 code_suggestions = self_optimize_code()
                 if code_suggestions:
                     logging.info("✅ تغییرات بهینه‌سازی داخلی اعمال شدند.")
-                
+
                 # ثبت نسخه جدید با متریک‌های سیستم
                 save_version("T13.3_V4_Auto", performance_metrics=current_emotion)
             except Exception as e:
                 logging.error(f"خطا در وظیفه زمان‌بندی ارتقا: {e}")
                 time.sleep(5)
+
     threading.Thread(target=scheduled_task, daemon=True).start()
     logging.info("🕒 زمان‌بندی ارتقا تنظیم شد.")
+
 
 if __name__ == "__main__":
     upgrade_scheduler(interval_minutes=1)

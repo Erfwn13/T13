@@ -1,5 +1,8 @@
 import unittest
-from multiverse_core import ScenarioBuilder, MultiProjectSync, CreativityPulse, MultiverseCore, WorldBuilder
+
+from multiverse_core import (CreativityPulse, MultiProjectSync, MultiverseCore,
+                             ScenarioBuilder, WorldBuilder)
+
 
 class TestMultiverseCore(unittest.TestCase):
     def test_scenario_builder(self):
@@ -10,7 +13,7 @@ class TestMultiverseCore(unittest.TestCase):
     def test_multi_project_sync(self):
         projects = [
             {"title": "AI Core", "status": "در حال توسعه"},
-            {"title": "Story Engine", "status": "تکمیل"}
+            {"title": "Story Engine", "status": "تکمیل"},
         ]
         output = MultiProjectSync(projects)
         self.assertIn("AI Core", output)
@@ -35,6 +38,7 @@ class TestMultiverseCore(unittest.TestCase):
         worlds = builder.list_worlds()
         self.assertEqual(len(worlds), 1)
         self.assertEqual(worlds[0]["theme"], "علمی-تخیلی")
+
 
 if __name__ == "__main__":
     unittest.main()

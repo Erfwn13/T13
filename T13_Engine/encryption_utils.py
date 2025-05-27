@@ -1,7 +1,9 @@
-from cryptography.fernet import Fernet
 import json
 
+from cryptography.fernet import Fernet
+
 KEY_FILE = "data/encryption_key.key"
+
 
 # Generate a key (run this once and save the key securely)
 def generate_key():
@@ -10,10 +12,12 @@ def generate_key():
         key_file.write(key)
     print("Encryption key generated and saved.")
 
+
 # Load the encryption key
 def load_key():
     with open(KEY_FILE, "rb") as key_file:
         return key_file.read()
+
 
 # Encrypt JSON data and save to a file
 def encrypt_json(data, output_file):
@@ -24,6 +28,7 @@ def encrypt_json(data, output_file):
     with open(output_file, "wb") as file:
         file.write(encrypted_data)
     print(f"Data encrypted and saved to {output_file}.")
+
 
 # Decrypt JSON file and return data
 def decrypt_json(input_file):

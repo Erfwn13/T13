@@ -1,5 +1,7 @@
 import unittest
+
 from interaction_module import TextInteraction
+
 
 class TestTextInteraction(unittest.TestCase):
     def setUp(self):
@@ -17,6 +19,7 @@ class TestTextInteraction(unittest.TestCase):
     def test_learn_and_memory(self):
         self.interaction.learn("ai", "هوش مصنوعی")
         self.assertEqual(self.interaction.memory["ai"], "هوش مصنوعی")
+
 
 if __name__ == "__main__":
     unittest.main()
