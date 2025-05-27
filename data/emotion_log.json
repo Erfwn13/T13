@@ -1294,5 +1294,21 @@
     "fear": 2,
     "energy": 7,
     "timestamp": "2025-05-25T00:43:29.293678"
+  },
+  {
+    "joy": 5,
+    "stress": 5,
+    "hope": 5,
+    "fear": 5,
+    "energy": 5,
+    "timestamp": "2025-05-27T14:20:35.956129"
+  },
+  {
+    "joy": 5,
+    "stress": 5,
+    "hope": 5,
+    "fear": 5,
+    "energy": 5,
+    "timestamp": "2025-05-27T14:21:12.126944"
   }
 ]
