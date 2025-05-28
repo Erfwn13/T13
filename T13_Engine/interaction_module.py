@@ -12,12 +12,12 @@ from textblob import TextBlob
 
 def is_persian(text):
     # اگر متن فقط شامل حروف فارسی و فاصله باشد، فارسی است
-    return bool(re.match(r"^[\u0600-\u06FF\s\d\.,!?؛،؟ـ‌\-\(\)\[\]]+$", text))
+    return bool(re.match(r"^[\u0600-\u06FF\s\d.,!?؛،؟ـ‌\-()\[\]]+$", text))
 
 
 def is_english(text):
     # اگر متن فقط شامل حروف انگلیسی و فاصله باشد، انگلیسی است
-    return bool(re.match(r"^[A-Za-z0-9\s\.,!?\-\(\)\[\]]+$", text))
+    return bool(re.match(r"^[A-Za-z0-9\s.,!?\-()\[\]]+$", text))
 
 
 class TextInteraction:
@@ -110,8 +110,8 @@ class TextInteraction:
         set_memory(key, value)
 
     def analyze_sentiment(self, text):
-        blob = TextBlob(text)
-        polarity = blob.sentiment.polarity
+        blob = TextBlob(str(text))
+        polarity = getattr(blob.sentiment, 'polarity', 0)
         if polarity > 0:
             return 1
         elif polarity < 0:
