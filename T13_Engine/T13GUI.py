@@ -21,7 +21,7 @@ class T13GUI:
 
         self.window = tk.Tk()
         self.window.title("T13.3 - سیستم تعامل هوشمند (تم مشکی-قرمز)")
-        self.window.geometry("980x720")
+        self.window.geometry("1024x720")
         self.window.configure(bg="#000000")
 
         self.style = ttk.Style(self.window)
