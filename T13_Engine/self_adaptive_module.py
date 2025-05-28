@@ -58,7 +58,7 @@ class SelfAdaptiveModule:
         if random.random() < epsilon:
             return random.randint(0, self.action_dim - 1)
         with torch.no_grad():
-            q_values = self.agent(torch.FloatTensor(state))
+            q_values = self.agent.forward(torch.FloatTensor(state))
         return q_values.argmax().item()
 
     def replay(self, batch_size=16):
@@ -72,8 +72,8 @@ class SelfAdaptiveModule:
         for state, action, reward, next_state, done in batch:
             state_v = torch.FloatTensor(state)
             next_state_v = torch.FloatTensor(next_state)
-            q_values = self.agent(state_v)
-            next_q_values = self.agent(next_state_v)
+            q_values = self.agent.forward(state_v)
+            next_q_values = self.agent.forward(next_state_v)
             target = reward + (0 if done else self.gamma * next_q_values.max().item())
             target_v = q_values.clone()
             target_v[action] = target
