@@ -8,48 +8,99 @@ from database_utils import initialize_database
 from digital_selfcare import get_system_health
 from emotion_stack import EmotionStack
 from multiverse_core import WorldBuilder
-from performance_dashboard import \
-    PerformanceDashboard  # وارد کردن داشبورد عملکرد
+from performance_dashboard import PerformanceDashboard
 from profile_manager import (export_profile, import_profile, list_profiles,
                              load_profile, save_profile)
 from t13_central import T13CentralCoreV4
 
 
 class T13GUI:
+    def add_background_gradient(self):
+        # افزودن گرادینت پس‌زمینه با Canvas و قرار دادن آن زیر همه ویجت‌ها
+        self.bg_canvas = tk.Canvas(self.window, width=1200, height=800, highlightthickness=0, bd=0)
+        self.bg_canvas.place(x=0, y=0, relwidth=1, relheight=1)
+        # رسم گرادینت عمودی
+        for i in range(0, 800, 2):
+            color = f"#181c24" if i < 400 else f"#23272f"
+            self.bg_canvas.create_rectangle(0, i, 1200, i+2, outline="", fill=color)
+        # lower حذف شد؛ canvas قبل از سایر ویجت‌ها ساخته می‌شود و در پس‌زمینه قرار می‌گیرد
+
     def __init__(self):
         initialize_database()
-
         self.window = tk.Tk()
-        self.window.title("T13.3 - سیستم تعامل هوشمند (تم مشکی-قرمز)")
-        self.window.geometry("1024x720")
-        self.window.configure(bg="#000000")
+        self.window.title("T13 Engine GUI")
+        self.window.geometry("1200x800")
+        self.window.configure(bg="#181c24")
+        self.add_background_gradient()  # اضافه کردن گرادینت پس‌زمینه
 
-        self.style = ttk.Style(self.window)
-        self.style.theme_use("clam")
-        self.style.configure(
+        # استایل مدرن و تقویت‌شده برای ttk
+        style = ttk.Style(self.window)
+        style.theme_use("clam")
+        # دکمه مدرن با گردی و سایه و افکت hover
+        style.configure(
             "TButton",
-            background="#1a1a1a",
+            background="#23272f",
             foreground="#ff3333",
-            font=("Segoe UI", 10, "bold"),
-            padding=8,
+            font=("Segoe UI", 11, "bold"),
+            padding=10,
+            borderwidth=0,
+            relief="flat",
+            focusthickness=3,
+            focuscolor="#ff3333"
         )
-        self.style.configure(
-            "TLabel", background="#000000", foreground="#ffffff", font=("Segoe UI", 10)
+        style.map(
+            "TButton",
+            background=[("active", "#ff3333"), ("!active", "#23272f")],
+            foreground=[("active", "#fff"), ("!active", "#ff3333")],
+            relief=[("pressed", "groove"), ("!pressed", "flat")],
+            highlightcolor=[("focus", "#ff3333")]
         )
-        self.style.configure("TEntry", font=("Segoe UI", 11), padding=8)
+        # گرد کردن بیشتر دکمه‌ها و سایه
+        style.configure("Rounded.TButton", borderwidth=0, relief="flat", padding=12, font=("Segoe UI", 11, "bold"), background="#23272f", foreground="#ff3333")
+        style.map("Rounded.TButton", background=[("active", "#ff3333")], foreground=[("active", "#fff")])
+        # لیبل مدرن
+        style.configure(
+            "TLabel",
+            background="#181c24",
+            foreground="#fff",
+            font=("Segoe UI", 11),
+            padding=6
+        )
+        # استایل combobox
+        style.configure("TCombobox", fieldbackground="#23272f", background="#23272f", foreground="#ff3333", borderwidth=0, padding=8, font=("Segoe UI", 11))
+        style.map("TCombobox", fieldbackground=[("readonly", "#23272f")], background=[("readonly", "#23272f")], foreground=[("readonly", "#ff3333")])
+        # استایل entry
+        style.configure("TEntry", font=("Segoe UI", 11), padding=8, fieldbackground="#23272f", foreground="#fff", borderwidth=0)
+        # استایل notification bar
+        self.notification_bar = tk.Label(
+            self.window,
+            text="",
+            bg="#ffcc00",
+            fg="#000",
+            font=("Segoe UI", 11, "bold"),
+            anchor="center",
+            relief="flat",
+            padx=8,
+            pady=4,
+            bd=0,
+            highlightthickness=2,
+            highlightbackground="#ff8800"
+        )
+        self.notification_bar.pack(fill=tk.X, side=tk.TOP, padx=0, pady=0)
+        self.notification_bar.pack_forget()
 
         self.notebook = ttk.Notebook(self.window)
-        self.notebook.pack(fill=tk.BOTH, expand=True)
+        self.notebook.pack(fill=tk.BOTH, expand=True, padx=18, pady=18)
 
         # تب چت
-        self.chat_frame = ttk.Frame(self.notebook)
-        self.notebook.add(self.chat_frame, text="Chat Interface")
-        self.setup_profile_selector()  # اضافه کردن انتخاب پروفایل
+        self.chat_frame = ttk.Frame(self.notebook, style="TFrame")
+        self.notebook.add(self.chat_frame, text="💬 Chat Interface")
+        self.setup_profile_selector()
         self.setup_chat_ui()
 
         # تب داشبورد عملکرد
-        self.dashboard_frame = ttk.Frame(self.notebook)
-        self.notebook.add(self.dashboard_frame, text="Performance Dashboard")
+        self.dashboard_frame = ttk.Frame(self.notebook, style="TFrame")
+        self.notebook.add(self.dashboard_frame, text="📊 Performance Dashboard")
         self.dashboard = PerformanceDashboard(self.dashboard_frame)
 
         # نمونه‌های قابلیت‌های سیستم
@@ -57,28 +108,31 @@ class T13GUI:
         self.emotion_stack = EmotionStack()
         self.central_core = T13CentralCoreV4(profile_name="focus_mode")
 
-        self.notification_bar = tk.Label(
-            self.window,
-            text="",
-            bg="#ffcc00",
-            fg="#000",
-            font=("Segoe UI", 10, "bold"),
-            anchor="center",
-        )
-        self.notification_bar.pack(fill=tk.X, side=tk.TOP)
-        self.notification_bar.pack_forget()  # مخفی در ابتدا
-
         self.current_theme = "dark"
 
     def setup_profile_selector(self):
-        frame = ttk.Frame(self.chat_frame)
-        frame.grid(row=0, column=2, padx=10, pady=10, sticky="ne")
-        ttk.Label(frame, text="انتخاب پروفایل:").pack(side="left")
+        # فریم اصلی انتخاب پروفایل
+        outer_frame = ttk.Frame(self.chat_frame)
+        outer_frame.grid(row=0, column=2, padx=10, pady=10, sticky="ne")
+
+        # فریم اسکرول‌پذیر افقی برای دکمه‌ها و ابزارها
+        canvas = tk.Canvas(outer_frame, height=60, bg="#181c24", highlightthickness=0)
+        scrollbar = ttk.Scrollbar(outer_frame, orient="horizontal", command=canvas.xview)
+        scrollable_frame = ttk.Frame(canvas)
+        scrollable_frame.bind(
+            "<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(xscrollcommand=scrollbar.set)
+        canvas.pack(side="top", fill="x", expand=True)
+        scrollbar.pack(side="bottom", fill="x")
+
+        # لیبل و ابزارهای انتخاب پروفایل
+        ttk.Label(scrollable_frame, text="انتخاب پروفایل:").pack(side="left", padx=(0, 4))
         self.profile_var = tk.StringVar()
         self.profile_search_var = tk.StringVar()
         profiles = list_profiles()
-        # Entry جستجو
-        search_entry = ttk.Entry(frame, textvariable=self.profile_search_var, width=12)
+        search_entry = ttk.Entry(scrollable_frame, textvariable=self.profile_search_var, width=12, style="TEntry")
         search_entry.pack(side="left", padx=(0, 5))
         search_entry.insert(0, "جستجو...")
 
@@ -90,80 +144,66 @@ class T13GUI:
 
         self.profile_search_var.trace_add("write", lambda *a: on_profile_search())
         self.profile_combo = ttk.Combobox(
-            frame, textvariable=self.profile_var, values=profiles, width=18
+            scrollable_frame, textvariable=self.profile_var, values=profiles, width=18, style="TCombobox"
         )
         self.profile_combo.pack(side="left", padx=5)
-        load_btn = ttk.Button(
-            frame, text="بارگذاری پروفایل", command=self.load_selected_profile
-        )
-        load_btn.pack(side="left")
-        refresh_btn = ttk.Button(
-            frame, text="🔄 بروزرسانی لیست", command=self.refresh_profiles
-        )
-        refresh_btn.pack(side="left")
-        new_btn = ttk.Button(
-            frame, text="➕ پروفایل جدید", command=self.create_new_profile
-        )
-        new_btn.pack(side="left")
-        del_btn = ttk.Button(
-            frame, text="🗑️ حذف پروفایل", command=self.delete_selected_profile
-        )
-        del_btn.pack(side="left")
-        info_btn = ttk.Button(
-            frame, text="ℹ️ خلاصه پروفایل", command=self.show_profile_info
-        )
-        info_btn.pack(side="left")
-        # export/import
-        export_btn = ttk.Button(
-            frame, text="⬇️ خروجی پروفایل", command=self.export_profile_gui
-        )
-        export_btn.pack(side="left")
-        import_btn = ttk.Button(
-            frame, text="⬆️ ورود پروفایل", command=self.import_profile_gui
-        )
-        import_btn.pack(side="left")
+
+        # دکمه‌های پروفایل با ظاهر گرد و فاصله مناسب
+        btn_style = {
+            "style": "Rounded.TButton",
+            "width": 14,
+            "padding": 6
+        }
+        for text, cmd in [
+            ("بارگذاری پروفایل", self.load_selected_profile),
+            ("🔄 بروزرسانی لیست", self.refresh_profiles),
+            ("➕ پروفایل جدید", self.create_new_profile),
+            ("🗑️ حذف پروفایل", self.delete_selected_profile),
+            ("ℹ️ خلاصه پروفایل", self.show_profile_info),
+            ("⬇️ خروجی پروفایل", self.export_profile_gui),
+            ("⬆️ ورود پروفایل", self.import_profile_gui),
+        ]:
+            ttk.Button(scrollable_frame, text=text, command=cmd, **btn_style).pack(side="left", padx=3)
+
         # انتخاب سبک پاسخ
-        ttk.Label(frame, text="سبک پاسخ:").pack(side="left", padx=(10, 0))
+        ttk.Label(scrollable_frame, text="سبک پاسخ:").pack(side="left", padx=(10, 0))
         self.style_var = tk.StringVar(value="default")
         self.style_combo = ttk.Combobox(
-            frame,
+            scrollable_frame,
             textvariable=self.style_var,
             values=["default", "formal", "friendly", "motivational"],
             width=12,
+            style="TCombobox"
         )
         self.style_combo.pack(side="left", padx=5)
         self.style_combo.bind("<<ComboboxSelected>>", self.change_response_style)
         # انتخاب مدل و زبان
-        ttk.Label(frame, text="مدل:").pack(side="left", padx=(10, 0))
+        ttk.Label(scrollable_frame, text="مدل:").pack(side="left", padx=(10, 0))
         self.model_var = tk.StringVar(value="auto")
         self.model_combo = ttk.Combobox(
-            frame,
+            scrollable_frame,
             textvariable=self.model_var,
             values=["auto", "gpt2", "HooshvareLab/gpt2-fa"],
             width=18,
+            style="TCombobox"
         )
         self.model_combo.pack(side="left", padx=5)
         self.model_combo.bind("<<ComboboxSelected>>", self.change_model_lang)
-        ttk.Label(frame, text="زبان:").pack(side="left", padx=(10, 0))
+        ttk.Label(scrollable_frame, text="زبان:").pack(side="left", padx=(10, 0))
         self.lang_var = tk.StringVar(value="fa")
         self.lang_combo = ttk.Combobox(
-            frame, textvariable=self.lang_var, values=["fa", "en"], width=8
+            scrollable_frame, textvariable=self.lang_var, values=["fa", "en"], width=8, style="TCombobox"
         )
         self.lang_combo.pack(side="left", padx=5)
         self.lang_combo.bind("<<ComboboxSelected>>", self.change_model_lang)
-        # دکمه‌های نسخه پشتیبان
-        backup_btn = ttk.Button(
-            frame, text="🗂️ نسخه‌های پشتیبان", command=self.show_backups_gui
-        )
-        backup_btn.pack(side="left")
-        help_btn = ttk.Button(frame, text="❓ راهنما", command=self.show_help_popup)
-        help_btn.pack(side="left")
-        theme_btn = ttk.Button(frame, text="🌓 تغییر تم", command=self.toggle_theme)
-        theme_btn.pack(side="left")
-        feedback_btn = ttk.Button(
-            frame, text="📢 ارسال بازخورد/گزارش خطا", command=self.show_feedback_popup
-        )
-        feedback_btn.pack(side="left")
+        # دکمه‌های نسخه پشتیبان و سایر ابزارها
+        for text, cmd in [
+            ("🗂️ نسخه‌های پشتیبان", self.show_backups_gui),
+            ("❓ راهنما", self.show_help_popup),
+            ("🌓 تغییر تم", self.toggle_theme),
+            ("📢 ارسال بازخورد/گزارش خطا", self.show_feedback_popup),
+        ]:
+            ttk.Button(scrollable_frame, text=text, command=cmd, **btn_style).pack(side="left", padx=3)
 
     def change_response_style(self, event=None):
         style = self.style_var.get()
@@ -203,11 +243,9 @@ class T13GUI:
                 lang = data.get("lang", "fa")
                 self.model_var.set(model)
                 self.lang_var.set(lang)
-                self.central_core.ai.interaction.deep_model = __import__(
-                    "deep_learning_model"
-                ).deep_learning_model.DeepConversationalModel(
-                    model_name=model, lang=lang
-                )
+                self.central_core.ai.interaction.deep_model = getattr(
+                    __import__("deep_learning_model"), "DeepConversationalModel"
+                )(model_name=model, lang=lang)
                 self.status_bar.config(text=f"وضعیت سیستم: مدل={model} | زبان={lang}")
                 # اگر مدل فارسی نصب نبود، هشدار GUI بده
                 if model == "HooshvareLab/gpt2-fa" and hasattr(
@@ -255,12 +293,13 @@ class T13GUI:
             textvariable=model_var,
             values=["auto", "gpt2", "HooshvareLab/gpt2-fa"],
             width=25,
+            style="TCombobox"
         )
         model_combo.pack(padx=10, pady=5)
         ttk.Label(win, text="زبان پیش‌فرض:").pack(padx=10, pady=(10, 0))
         lang_var = tk.StringVar(value="fa")
         lang_combo = ttk.Combobox(
-            win, textvariable=lang_var, values=["fa", "en"], width=25
+            win, textvariable=lang_var, values=["fa", "en"], width=25, style="TCombobox"
         )
         lang_combo.pack(padx=10, pady=5)
         ttk.Button(win, text="ذخیره", command=save).pack(pady=10)
@@ -372,9 +411,27 @@ class T13GUI:
             pass
 
     def create_action_buttons(self):
+        # فریم جدا برای دکمه‌های اکشن پایین چت
         button_frame = ttk.Frame(self.chat_frame)
-        button_frame.grid(row=2, column=0, columnspan=2, pady=10)
-        buttons = [
+        button_frame.grid(row=2, column=0, columnspan=2, pady=10, sticky="we")
+        # اسکرول افقی برای دکمه‌های اکشن
+        canvas = tk.Canvas(button_frame, height=54, bg="#181c24", highlightthickness=0)
+        scrollbar = ttk.Scrollbar(button_frame, orient="horizontal", command=canvas.xview)
+        scrollable_frame = ttk.Frame(canvas)
+        scrollable_frame.bind(
+            "<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(xscrollcommand=scrollbar.set)
+        canvas.pack(side="top", fill="x", expand=True)
+        scrollbar.pack(side="bottom", fill="x")
+        # دکمه‌های اکشن با ظاهر گرد و فاصله مناسب
+        btn_style = {
+            "style": "Rounded.TButton",
+            "width": 18,
+            "padding": 8
+        }
+        for text, command in [
             ("📊 تحلیل احساسات", self.run_emotion_analysis),
             ("🧠 حافظه", self.run_memory),
             ("🧭 تصمیم‌گیری", self.run_decision),
@@ -385,10 +442,8 @@ class T13GUI:
             ("📂 بارگذاری مکالمه", self.load_conversation),
             ("🌍 دنیاسازی", self.run_create_world),
             ("🧠 آخرین احساسات", self.run_emotion_stack),
-        ]
-        for text, command in buttons:
-            btn = ttk.Button(button_frame, text=text, command=command, width=20)
-            btn.pack(side="left", padx=5)
+        ]:
+            ttk.Button(scrollable_frame, text=text, command=command, **btn_style).pack(side="left", padx=5)
 
     def send_message(self):
         user_message = self.user_input.get()
@@ -502,9 +557,9 @@ class T13GUI:
         model = self.model_var.get()
         lang = self.lang_var.get()
         if hasattr(self.central_core.ai.interaction, "deep_model"):
-            self.central_core.ai.interaction.deep_model = __import__(
-                "deep_learning_model"
-            ).deep_learning_model.DeepConversationalModel(model_name=model, lang=lang)
+            self.central_core.ai.interaction.deep_model = getattr(
+                __import__("deep_learning_model"), "DeepConversationalModel"
+            )(model_name=model, lang=lang)
         self.status_bar.config(text=f"وضعیت سیستم: مدل={model} | زبان={lang}")
         self.update_chat(f"مدل عمیق به '{model}' و زبان به '{lang}' تغییر یافت.")
 
@@ -546,20 +601,21 @@ class T13GUI:
         messagebox.showinfo("راهنمای کاربری T13.3", help_text)
 
     def toggle_theme(self):
+        style = ttk.Style(self.window)
         if self.current_theme == "dark":
             self.window.configure(bg="#f5f5f5")
-            self.chat_frame.configure(style="Light.TFrame")
-            self.style.configure("TLabel", background="#f5f5f5", foreground="#222")
-            self.style.configure("TButton", background="#e0e0e0", foreground="#222")
+            self.chat_frame.configure(style="TFrame")
+            style.configure("TLabel", background="#f5f5f5", foreground="#222")
+            style.configure("TButton", background="#e0e0e0", foreground="#222")
             self.chat_display.config(bg="#ffffff", fg="#222")
             self.notification_bar.config(bg="#ffe066", fg="#222")
             self.current_theme = "light"
         else:
-            self.window.configure(bg="#000000")
+            self.window.configure(bg="#181c24")
             self.chat_frame.configure(style="TFrame")
-            self.style.configure("TLabel", background="#000000", foreground="#fff")
-            self.style.configure("TButton", background="#1a1a1a", foreground="#ff3333")
-            self.chat_display.config(bg="#000000", fg="#00FF00")
+            style.configure("TLabel", background="#181c24", foreground="#fff")
+            style.configure("TButton", background="#23272f", foreground="#ff3333")
+            self.chat_display.config(bg="#181c24", fg="#00FF00")
             self.notification_bar.config(bg="#ffcc00", fg="#000")
             self.current_theme = "dark"
 

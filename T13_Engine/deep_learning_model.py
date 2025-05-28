@@ -12,12 +12,12 @@ class DeepConversationalModel:
         try:
             self.tokenizer = GPT2Tokenizer.from_pretrained(model_name)
             self.model = GPT2LMHeadModel.from_pretrained(model_name)
-            self.device = device
-            self.model.to(self.device)
+            self.device = torch.device(device)
+            self.model.to(device=self.device)  # type: ignore
         except Exception as e:
             self.tokenizer = None
             self.model = None
-            self.device = device
+            self.device = torch.device(device)
             self.error = str(e)
 
     def generate_response(
@@ -26,15 +26,22 @@ class DeepConversationalModel:
         if not self.model or not self.tokenizer:
             return f"مدل عمیق بارگذاری نشد: {getattr(self, 'error', 'نامشخص')}"
         try:
-            inputs = self.tokenizer.encode(prompt, return_tensors="pt").to(self.device)
+            inputs = self.tokenizer.encode(prompt, return_tensors="pt")
+            # ساخت attention_mask برای رفع هشدار
+            attention_mask = torch.ones_like(inputs)
+            if hasattr(inputs, 'to'):
+                inputs = inputs.to(self.device)
+                attention_mask = attention_mask.to(self.device)
             with torch.no_grad():
                 outputs = self.model.generate(
                     inputs,
+                    attention_mask=attention_mask,
                     max_length=max_length,
                     do_sample=True,
                     temperature=temperature,
                     top_k=top_k,
                     top_p=top_p,
+                    pad_token_id=self.tokenizer.eos_token_id
                 )
             return self.tokenizer.decode(outputs[0], skip_special_tokens=True)
         except Exception as e:

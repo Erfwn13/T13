@@ -2,3 +2,7 @@
 2025-05-21 13:55:26,074 - INFO - Elapsed Time: 0.00 seconds
 2025-05-21 13:55:29,152 - INFO - Performance Metrics: {'avg_emotion': 5.6}
 2025-05-21 13:55:31,798 - INFO - Elapsed Time: 5.72 seconds
+2025-05-28 13:47:51,786 - INFO - Performance Metrics: {'cpu_usage': 45.2, 'memory_usage_mb': 128, 'response_time_ms': 250}
+2025-05-28 13:47:52,787 - INFO - Elapsed Time: 1.00 seconds
+2025-05-28 13:54:55,288 - INFO - Performance Metrics: {'cpu_usage': 45.2, 'memory_usage_mb': 128, 'response_time_ms': 250}
+2025-05-28 13:54:56,352 - INFO - Elapsed Time: 1.06 seconds

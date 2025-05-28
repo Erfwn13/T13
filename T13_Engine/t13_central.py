@@ -79,6 +79,7 @@ class T13CentralCoreV4:
         print(f"👤 User: {self.user}")
         print(f"📂 Profile Loaded: {self.profile_name}")
         print("📊 شاخص‌های داخلی:", internal_metrics)
+        avg_metric = sum(internal_metrics.values()) / len(internal_metrics)  # محاسبه شاخص به صورت یکسان برای استفاده‌های بعدی
 
         # گزارش زمان شروع
         self.monitor.log_performance(
@@ -124,10 +125,9 @@ class T13CentralCoreV4:
                 print("➤", t)
             print("📈 میانگین شاخص‌های سیستم:")
             for k, v in avg.items():
-                print(f" - {k}: {round(v, 2)}")
-            # ثبت معیارهای عملکرد
-            avg_metric = sum(internal_metrics.values()) / len(internal_metrics)
-            self.monitor.log_performance({"avg_metric": avg_metric})
+                # ثبت معیارهای عملکرد (شاخص قبلاً محاسبه شده است)
+                self.monitor.log_performance({"avg_metric": avg_metric})
+                self.monitor.log_performance({"avg_metric": avg_metric})
         except Exception as e:
             print(f"⚠️ Error in system diagnostics: {str(e)}")
 
@@ -161,8 +161,8 @@ class T13CentralCoreV4:
 
         # اجرای ارتقای درونی جهت بهبود بهینه‌سازی داخلی کد به صورت خودکار
         self.internal_upgrade(internal_metrics)
-
-        self.adaptive_decision(avg, internal_metrics)
+    
+        self.adaptive_decision(avg_metric, internal_metrics)
         # گزارش زمان پایان و محاسبه کلی زمان اجرا
         self.monitor.report_elapsed_time()
 
