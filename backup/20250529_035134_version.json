@@ -1,0 +1,14 @@
+{
+    "version": "T13.3+",
+    "timestamp": "2025-05-28T16:21:07.648143",
+    "performance": {
+        "avg_emotion": {
+            "joy": 5,
+            "stress": 5,
+            "hope": 5,
+            "fear": 5,
+            "energy": 5,
+            "timestamp": "2025-05-28T16:21:02.383300"
+        }
+    }
+}

@@ -1,0 +1,127 @@
+
+
+===== Suggestions 2025-05-29T04:16:55.346453 =====
+- پیشنهاد: تقسیم ماژول به چند فایل کوچکتر برای خوانایی و نگهداری بهتر.
+
+[Code Stats] {'functions': 17, 'classes': 1, 'lines': 380, 'try_blocks': 17, 'except_blocks': 20, 'docstrings': 22, 'long_lines': 0}
+
+
+===== Suggestions 2025-05-29T04:17:15.320377 =====
+- کاهش طول خطوط بلند (بیش از ۱۲۰ کاراکتر) در خطوط: [64, 165]
+- پیشنهاد: تقسیم ماژول به چند فایل کوچکتر برای خوانایی و نگهداری بهتر.
+
+[Code Stats] {'functions': 17, 'classes': 1, 'lines': 380, 'try_blocks': 17, 'except_blocks': 20, 'docstrings': 22, 'long_lines': 2}
+
+
+===== Suggestions 2025-05-29T04:17:19.399229 =====
+- پیشنهاد: تقسیم ماژول به چند فایل کوچکتر برای خوانایی و نگهداری بهتر.
+
+[Code Stats] {'functions': 17, 'classes': 1, 'lines': 380, 'try_blocks': 17, 'except_blocks': 20, 'docstrings': 22, 'long_lines': 0}
+
+
+===== Suggestions 2025-05-29T04:34:16.899422 =====
+- پیشنهاد: تقسیم ماژول به چند فایل کوچکتر برای خوانایی و نگهداری بهتر.
+
+[Code Stats] {'functions': 20, 'classes': 2, 'lines': 455, 'try_blocks': 17, 'except_blocks': 20, 'docstrings': 23, 'long_lines': 0}
+
+
+===== Suggestions 2025-05-29T04:35:21.507643 =====
+- پیشنهاد: تقسیم ماژول به چند فایل کوچکتر برای خوانایی و نگهداری بهتر.
+
+[Code Stats] {'functions': 20, 'classes': 2, 'lines': 455, 'try_blocks': 17, 'except_blocks': 20, 'docstrings': 23, 'long_lines': 0}
+
+
+===== Suggestions 2025-05-29T04:36:26.753768 =====
+- پیشنهاد: تقسیم ماژول به چند فایل کوچکتر برای خوانایی و نگهداری بهتر.
+
+[Code Stats] {'functions': 20, 'classes': 2, 'lines': 455, 'try_blocks': 17, 'except_blocks': 20, 'docstrings': 23, 'long_lines': 0}
+
+
+===== Suggestions 2025-05-29T04:37:31.325259 =====
+- پیشنهاد: تقسیم ماژول به چند فایل کوچکتر برای خوانایی و نگهداری بهتر.
+
+[Code Stats] {'functions': 20, 'classes': 2, 'lines': 455, 'try_blocks': 17, 'except_blocks': 20, 'docstrings': 23, 'long_lines': 0}
+
+
+===== Suggestions 2025-05-29T04:38:35.908910 =====
+- پیشنهاد: تقسیم ماژول به چند فایل کوچکتر برای خوانایی و نگهداری بهتر.
+
+[Code Stats] {'functions': 20, 'classes': 2, 'lines': 455, 'try_blocks': 17, 'except_blocks': 20, 'docstrings': 23, 'long_lines': 0}
+
+
+===== Suggestions 2025-05-29T04:39:40.659796 =====
+- پیشنهاد: تقسیم ماژول به چند فایل کوچکتر برای خوانایی و نگهداری بهتر.
+
+[Code Stats] {'functions': 20, 'classes': 2, 'lines': 455, 'try_blocks': 17, 'except_blocks': 20, 'docstrings': 23, 'long_lines': 0}
+
+
+===== Suggestions 2025-05-29T04:40:45.245070 =====
+- پیشنهاد: تقسیم ماژول به چند فایل کوچکتر برای خوانایی و نگهداری بهتر.
+
+[Code Stats] {'functions': 20, 'classes': 2, 'lines': 455, 'try_blocks': 17, 'except_blocks': 20, 'docstrings': 23, 'long_lines': 0}
+
+
+===== Suggestions 2025-05-29T04:41:49.860820 =====
+- پیشنهاد: تقسیم ماژول به چند فایل کوچکتر برای خوانایی و نگهداری بهتر.
+
+[Code Stats] {'functions': 20, 'classes': 2, 'lines': 455, 'try_blocks': 17, 'except_blocks': 20, 'docstrings': 23, 'long_lines': 0}
+
+
+===== Suggestions 2025-05-29T04:42:52.405788 =====
+- کد شما نیاز به مستندسازی بیشتر دارد.
+- برخی توابع طولانی هستند، تقسیم آن‌ها توصیه می‌شود.
+- پیشنهاد: تقسیم ماژول به چند فایل کوچکتر برای خوانایی و نگهداری بهتر.
+
+[Code Stats] {'functions': 20, 'classes': 2, 'lines': 455, 'try_blocks': 17, 'except_blocks': 20, 'docstrings': 23, 'long_lines': 0}
+
+
+===== Suggestions 2025-05-29T04:43:54.956648 =====
+- کد شما نیاز به مستندسازی بیشتر دارد.
+- برخی توابع طولانی هستند، تقسیم آن‌ها توصیه می‌شود.
+- پیشنهاد: تقسیم ماژول به چند فایل کوچکتر برای خوانایی و نگهداری بهتر.
+
+[Code Stats] {'functions': 20, 'classes': 2, 'lines': 455, 'try_blocks': 17, 'except_blocks': 20, 'docstrings': 23, 'long_lines': 0}
+
+
+===== Suggestions 2025-05-29T04:44:57.734709 =====
+- کد شما نیاز به مستندسازی بیشتر دارد.
+- برخی توابع طولانی هستند، تقسیم آن‌ها توصیه می‌شود.
+- پیشنهاد: تقسیم ماژول به چند فایل کوچکتر برای خوانایی و نگهداری بهتر.
+
+[Code Stats] {'functions': 20, 'classes': 2, 'lines': 455, 'try_blocks': 17, 'except_blocks': 20, 'docstrings': 23, 'long_lines': 0}
+
+
+===== Suggestions 2025-05-29T04:46:00.292391 =====
+- کد شما نیاز به مستندسازی بیشتر دارد.
+- برخی توابع طولانی هستند، تقسیم آن‌ها توصیه می‌شود.
+- پیشنهاد: تقسیم ماژول به چند فایل کوچکتر برای خوانایی و نگهداری بهتر.
+
+[Code Stats] {'functions': 20, 'classes': 2, 'lines': 455, 'try_blocks': 17, 'except_blocks': 20, 'docstrings': 23, 'long_lines': 0}
+
+
+===== Suggestions 2025-05-29T04:47:03.984898 =====
+- کد شما نیاز به مستندسازی بیشتر دارد.
+- برخی توابع طولانی هستند، تقسیم آن‌ها توصیه می‌شود.
+- پیشنهاد: تقسیم ماژول به چند فایل کوچکتر برای خوانایی و نگهداری بهتر.
+
+[Code Stats] {'functions': 20, 'classes': 2, 'lines': 455, 'try_blocks': 17, 'except_blocks': 20, 'docstrings': 23, 'long_lines': 0}
+
+
+===== Suggestions 2025-05-29T04:48:06.560111 =====
+- کد شما نیاز به مستندسازی بیشتر دارد.
+- برخی توابع طولانی هستند، تقسیم آن‌ها توصیه می‌شود.
+- پیشنهاد: تقسیم ماژول به چند فایل کوچکتر برای خوانایی و نگهداری بهتر.
+
+[Code Stats] {'functions': 20, 'classes': 2, 'lines': 455, 'try_blocks': 17, 'except_blocks': 20, 'docstrings': 23, 'long_lines': 0}
+
+
+===== Suggestions 2025-05-29T04:49:11.164022 =====
+- پیشنهاد: تقسیم ماژول به چند فایل کوچکتر برای خوانایی و نگهداری بهتر.
+
+[Code Stats] {'functions': 20, 'classes': 2, 'lines': 455, 'try_blocks': 17, 'except_blocks': 20, 'docstrings': 23, 'long_lines': 0}
+
+
+===== Suggestions 2025-05-29T04:50:15.741654 =====
+- پیشنهاد: تقسیم ماژول به چند فایل کوچکتر برای خوانایی و نگهداری بهتر.
+
+[Code Stats] {'functions': 20, 'classes': 2, 'lines': 455, 'try_blocks': 17, 'except_blocks': 20, 'docstrings': 23, 'long_lines': 0}

@@ -99,87 +99,39 @@ def log_upgrade_suggestion(suggestions):
 
 def auto_refactor():
     try:
-        logging.info("🔄 تحلیل ساختار کد (بدون تغییر خودکار)...")
-        # فقط تحلیل و گزارش، بدون هیچگونه تغییر در فایل کد
+        logging.info("🔄 آغاز بازنویسی خودکار سیستم (Refactor)...")
+        # شبیه‌سازی تحلیل استاتیک کد و بهبود ساختار آن
+        time.sleep(1)
+        # --- ارتقاهای جدید: تحلیل و پیشنهاد خودکار ---
+        # ۱. بررسی خطوط تکراری و حذف آن‌ها
         with open(__file__, "r", encoding="utf-8") as f:
             code_lines = f.readlines()
-        # تحلیل خطوط تکراری
+        unique_lines = []
         seen = set()
-        duplicate_lines = []
-        for i, line in enumerate(code_lines):
-            key = line.strip()
-            if key in seen:
-                duplicate_lines.append(i+1)
-            else:
-                seen.add(key)
-        if duplicate_lines:
-            logging.warning(f"خطوط تکراری در کد (بدون حذف): {duplicate_lines}")
-        # تحلیل خطوط بسیار طولانی
-        long_lines = [i+1 for i, l in enumerate(code_lines) if len(l) > 120]
+        for line in code_lines:
+            if line.strip() not in seen:
+                unique_lines.append(line)
+                seen.add(line.strip())
+        if len(unique_lines) < len(code_lines):
+            backup_file(__file__)
+            with open(__file__, "w", encoding="utf-8") as f:
+                f.writelines(unique_lines)
+            logging.info("خطوط تکراری حذف شدند و کد تمیزتر شد.")
+        # ۲. بررسی و هشدار خطوط بسیار طولانی
+        long_lines = [i+1 for i, l in enumerate(unique_lines) if len(l) > 120]
         if long_lines:
             logging.warning(f"خطوط بسیار طولانی (بیش از ۱۲۰ کاراکتر) در خطوط: {long_lines}")
-        # تحلیل حجم ماژول
-        if len(code_lines) > 400:
+        # ۳. پیشنهاد تقسیم ماژول اگر خطوط زیاد باشد
+        if len(unique_lines) > 400:
             logging.warning("پیشنهاد: تقسیم ماژول به چند فایل کوچکتر برای نگهداری بهتر.")
-        # تحلیل عمیق‌تر: شناسایی توابع بدون داک‌استرینگ و توابع بسیار طولانی
-        in_function = False
-        func_name = None
-        func_start = 0
-        func_lines = 0
-        functions_info = []
-        for idx, line in enumerate(code_lines):
-            stripped = line.strip()
-            if stripped.startswith('def '):
-                if in_function:
-                    functions_info.append({
-                        'name': func_name,
-                        'start': func_start+1,
-                        'lines': func_lines
-                    })
-                in_function = True
-                func_name = stripped.split('def ')[1].split('(')[0].strip()
-                func_start = idx
-                func_lines = 1
-            elif in_function:
-                if stripped.startswith('def ') or stripped.startswith('class '):
-                    in_function = False
-                else:
-                    func_lines += 1
-                # پایان تابع در انتهای فایل
-                if idx == len(code_lines)-1 and in_function:
-                    functions_info.append({
-                        'name': func_name,
-                        'start': func_start+1,
-                        'lines': func_lines
-                    })
-        # شناسایی توابع بدون داک‌استرینگ و توابع طولانی
-        funcs_no_doc = []
-        long_funcs = []
-        for info in functions_info:
-            # بررسی داک‌استرینگ
-            docstring_found = False
-            for i in range(info['start'], min(info['start']+5, len(code_lines))):
-                if '"""' in code_lines[i]:
-                    docstring_found = True
-                    break
-            if not docstring_found:
-                funcs_no_doc.append(info['name'])
-            if info['lines'] > 100:
-                long_funcs.append((info['name'], info['lines']))
-        if funcs_no_doc:
-            logging.warning(f"توابع بدون داک‌استرینگ: {funcs_no_doc}")
-        if long_funcs:
-            logging.warning(f"توابع بسیار طولانی (بیش از ۵۰ خط): {long_funcs}")
-        # ثبت گزارش تحلیل در snapshot
+        # ۴. ثبت snapshot جدید پس از refactor
         log_path = os.path.join(os.path.dirname(__file__), "..", "data", "self_upgrade_code_snapshot.log")
         with open(os.path.abspath(log_path), "a", encoding="utf-8") as logf:
-            logf.write(f"\n\n===== Analysis Snapshot {datetime.now().isoformat()} =====\n")
-            logf.write(f"Lines: {len(code_lines)}\nDuplicates: {duplicate_lines}\nLongLines: {long_lines}\n")
-            logf.write(f"Functions without docstring: {funcs_no_doc}\n")
-            logf.write(f"Long functions: {long_funcs}\n")
-        logging.info("✅ تحلیل ساختار کد انجام شد (بدون تغییر خودکار).")
+            logf.write(f"\n\n===== Refactor Snapshot {datetime.now().isoformat()} =====\n")
+            logf.writelines(unique_lines)
+        logging.info("✅ بازنویسی خودکار سیستم به پایان رسید و snapshot ثبت شد.")
     except Exception as e:
-        logging.error(f"خطا در تحلیل ساختار کد: {e}")
+        logging.error(f"خطا در بازنویسی خودکار سیستم: {e}")
 
 
 def self_optimize_code():
@@ -453,4 +405,3 @@ if __name__ == "__main__":
     # نگه‌داری برنامه برای مشاهده فعالیت‌های زمان‌بندی
     while True:
         time.sleep(1)
-        
