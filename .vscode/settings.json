@@ -1,5 +1,4 @@
 {
     "bitoAI.codeCompletion.enableAutoCompletion": false,
-    "CodeGPT.apiKey": "CodeGPT Plus Beta",
-    "qodana.projectId": "Rv6ZX"
+    "CodeGPT.apiKey": "CodeGPT Plus Beta"
 }
